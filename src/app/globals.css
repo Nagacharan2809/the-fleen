@@ -1,26 +1,213 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ————————————————————————————————————————————
+   LEXI LABS — proprietary visual system
+   Type: Lexi Sans (loaded from /public/fonts/lexi-sans/)
+   Surfaces: Ink / Paper. One signal colour only.
+   ———————————————————————————————————————————— */
+
+/* Lexi Sans — drop production woff2 files here:
+   /public/fonts/lexi-sans/lexi-sans-regular.woff2
+   /public/fonts/lexi-sans/lexi-sans-medium.woff2
+   /public/fonts/lexi-sans/lexi-sans-semibold.woff2
+   /public/fonts/lexi-sans/lexi-sans-bold.woff2
+   /public/fonts/lexi-sans/lexi-sans-display.woff2
+   Until then the fallback stack below preserves metrics. */
+@font-face {
+  font-family: "Lexi Sans";
+  src: url("/fonts/lexi-sans/lexi-sans-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Lexi Sans";
+  src: url("/fonts/lexi-sans/lexi-sans-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Lexi Sans";
+  src: url("/fonts/lexi-sans/lexi-sans-semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Lexi Sans";
+  src: url("/fonts/lexi-sans/lexi-sans-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Lexi Sans Display";
+  src: url("/fonts/lexi-sans/lexi-sans-display.woff2") format("woff2");
+  font-weight: 700 800;
+  font-style: normal;
+  font-display: swap;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-lexi: "Lexi Sans", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-lexi-display: "Lexi Sans Display", "Lexi Sans", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-lexi-mono: "Lexi Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --color-ink: #0f110d;
+  --color-ink-2: #171a14;
+  --color-ink-3: #20241b;
+  --color-paper: #ede8db;
+  --color-paper-2: #e0d9c4;
+  --color-signal: #e8490f;
+  --color-instrument: #1e4a3e;
+  --color-line-dark: rgba(237, 232, 219, 0.14);
+  --color-line-light: rgba(15, 17, 13, 0.16);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --lexi-ink: #0f110d;
+  --lexi-ink-2: #171a14;
+  --lexi-paper: #ede8db;
+  --lexi-signal: #e8490f;
+  --lexi-instrument: #1e4a3e;
+  --lexi-radius-tech: 2px;
+  --lexi-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Lenis smooth scroll — CSS smooth disabled so Lenis owns the wheel */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+html, body {
+  background: var(--lexi-ink);
+  color: var(--lexi-paper);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-lexi);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--lexi-signal);
+  color: #fff;
+}
+
+/* Display cut: engineered, tight, uppercase-capable */
+.lexi-display {
+  font-family: var(--font-lexi-display);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+  text-transform: uppercase;
+  font-stretch: condensed;
+}
+
+.lexi-heading {
+  font-family: var(--font-lexi);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+
+.lexi-micro {
+  font-family: var(--font-lexi-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.lexi-mono {
+  font-family: var(--font-lexi-mono);
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+.lexi-body-narrow {
+  max-width: 34rem;
+}
+
+/* Hairlines — the only border language on the site */
+.rule-dark { border-color: rgba(237, 232, 219, 0.14); }
+.rule-light { border-color: rgba(15, 17, 13, 0.16); }
+
+/* Masked reveal primitives (GSAP animates --lexi-r from 110% → 0%) */
+.mask-line {
+  display: block;
+  overflow: hidden;
+}
+.mask-line > span {
+  display: block;
+  transform: translateY(var(--lexi-r, 110%));
+  will-change: transform;
+}
+
+/* Numerical tabular data */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Focus: visible, square, lab-like */
+:focus-visible {
+  outline: 2px solid var(--lexi-signal);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* Instrument surface: flat, 1px border, 2px radius, no shadow */
+.instrument {
+  border: 1px solid rgba(237, 232, 219, 0.16);
+  border-radius: 2px;
+  background: rgba(23, 26, 20, 0.72);
+}
+.instrument-light {
+  border: 1px solid rgba(15, 17, 13, 0.2);
+  border-radius: 2px;
+  background: transparent;
+}
+
+/* Grain: single fixed overlay, very subtle, pointer-free */
+.lexi-grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* Scrollbar: thin, lab instrument */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0f110d; }
+::-webkit-scrollbar-thumb { background: #2c3125; border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: #e8490f; }
+
+/* Reduced motion: content fully usable, no animation */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .mask-line > span { transform: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mobile display scale guard */
+@media (max-width: 768px) {
+  .lexi-display { letter-spacing: -0.03em; }
 }
